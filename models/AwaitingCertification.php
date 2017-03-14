@@ -46,19 +46,32 @@ class AwaitingCertification extends \humhub\components\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function init()
     {
-        return [
-            'id' => 'ID',
-            'created_at' => 'Created At',
-            'his_picture_url' => 'His Picture Url',
-            'her_picture_url' => 'Her Picture Url',
-            'user_id' => 'User ID',
-            'file_her' => 'Her Picture',
-            'file_him' => 'His Picture',
-        ];
+        $this->title = $settings->get('title', Yii::t('CertificationModule.models_forms_AwaitingCertification', 'Created At',
+        $this->title = $settings->get('title', Yii::t('CertificationModule.models_forms_AwaitingCertification', 'His Picture Url',
+        $this->title = $settings->get('title', Yii::t('CertificationModule.models_forms_AwaitingCertification', 'Her Picture Url',
+        $this->title = $settings->get('title', Yii::t('CertificationModule.models_forms_AwaitingCertification', 'User ID',
+        $this->title = $settings->get('title', Yii::t('CertificationModule.models_forms_AwaitingCertification', 'Her Picture',
+        $this->title = $settings->get('title', Yii::t('CertificationModule.models_forms_AwaitingCertification', 'His Picture',
     }
-
+    /**
+     * Declares customized attribute labels.
+     * If not declared here, an attribute would have a label that is
+     * the same as its name with the first letter in upper case.
+     */
+     public function attributeLabels()
+     {
+     return array(
+        'created at' => Yii::t('CertificationModule.models_forms_AwaitingCertification', 'Created At'),
+        'his picture url' => Yii::t('CertificationModule.models_forms_AwaitingCertification', 'His Picture Url'),
+        'her picture irl' => Yii::t('CertificationModule.models_forms_AwaitingCertification', 'Her Picture Url'),
+        'user id' => Yii::t('CertificationModule.models_forms_AwaitingCertification', 'User ID'),
+        'her picture' => Yii::t('CertificationModule.models_forms_AwaitingCertification', 'Her Picture'),
+        'her picture' => Yii::t('CertificationModule.models_forms_AwaitingCertification', 'His Picture'),
+         ];
+     }
+         
     /**
      * @return \yii\db\ActiveQuery
      */
