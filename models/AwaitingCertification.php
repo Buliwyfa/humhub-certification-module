@@ -62,13 +62,13 @@ class AwaitingCertification extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('certifiedModule.models_forms_AwaitingCertification', 'ID',
-            'user_id' => Yii::t('certifiedModule.models_forms_AwaitingCertification', 'User ID',
-            'created_at' => Yii::t('certifiedModule.models_forms_AwaitingCertification', 'Created At',
-            'her_picture_guid' => Yii::t('certifiedModule.models_forms_AwaitingCertification', 'Her Picture Guid',
-            'his_picture_guid' => Yii::t('certifiedModule.models_forms_AwaitingCertification', 'His Picture Guid',
-            'status' => Yii::t('certifiedModule.models_forms_AwaitingCertification', 'Status',
-            'message' => Yii::t('certifiedModule.models_forms_AwaitingCertification', 'Message',
+            'id' => echo \Yii::t('certifiedModule.models_forms_AwaitingCertification', 'ID'),
+            'user_id' => echo \Yii::t('certifiedModule.models_forms_AwaitingCertification', 'User ID'),
+            'created_at' => echo \Yii::t('certifiedModule.models_forms_AwaitingCertification', 'Created At'),
+            'her_picture_guid' => echo \Yii::t('certifiedModule.models_forms_AwaitingCertification', 'Her Picture Guid'),
+            'his_picture_guid' => echo \Yii::t('certifiedModule.models_forms_AwaitingCertification', 'His Picture Guid'),
+            'status' => echo \Yii::t('certifiedModule.models_forms_AwaitingCertification', 'Status'),
+            'message' => echo \Yii::t('certifiedModule.models_forms_AwaitingCertification', 'Message'),
         ]; 
     }
 
