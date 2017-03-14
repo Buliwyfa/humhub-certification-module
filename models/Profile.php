@@ -39,13 +39,24 @@ class Profile extends \humhub\components\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function init()
     {
-        return [
-            'awaiting_certification' => 'Awaiting Certification',
-            'certified' => 'Certified',
-            'certified_by' => 'Certified By',
-        ];
+        $this->title = $settings->get('title', Yii::t('CertificationModule.models_forms_Profile', 'Awaiting Certification',
+        $this->title = $settings->get('title', Yii::t('CertificationModule.models_forms_Profile', 'Certified',
+        $this->title = $settings->get('title', Yii::t('CertificationModule.models_forms_Profile', 'Certified By',
     }
+    /**
+     * Declares customized attribute labels.
+     * If not declared here, an attribute would have a label that is
+     * the same as its name with the first letter in upper case.
+     */
+     public function attributeLabels()
+     {
+     return array(
+        'awaiting certification' => Yii::t('CertificationModule.models_forms_Profile', 'Awaiting Certification'),
+        'certified' => Yii::t('CertificationModule.models_forms_Profile', 'Certified'),
+        'certified by' => Yii::t('CertificationModule.models_forms_Profile', 'Certified By'),
+         ];
+     }
 
 }
