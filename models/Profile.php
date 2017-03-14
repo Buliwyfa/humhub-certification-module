@@ -76,8 +76,8 @@ class Profile extends ActiveRecord
     {
         return [
             'user_id' => Yii::t('certifiedModule.models_forms_Profile', 'User ID'),
-            'first name' => Yii::t('certifiedModule.models_forms_Profile', 'First name'),
-            'last name' => Yii::t('certifiedModule.models_forms_Profile', 'Last name'),
+            'firstname' => Yii::t('certifiedModule.models_forms_Profile', 'First name'),
+            'lastname' => Yii::t('certifiedModule.models_forms_Profile', 'Last name'),
             'title' => Yii::t('certifiedModule.models_forms_Profile', 'Title'),
             'gender' => Yii::t('certifiedModule.models_forms_Profile', 'Gender'),
             'street' => Yii::t('certifiedModule.models_forms_Profile', 'Street'),
