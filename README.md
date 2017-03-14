@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GreenVolume/member-certification-/badges/quality-score.png?b=dev)](https://scrutinizer-ci.com/g/GreenVolume/member-certification-/?branch=dev) [![Code Coverage](https://scrutinizer-ci.com/g/GreenVolume/member-certification-/badges/coverage.png?b=dev)](https://scrutinizer-ci.com/g/GreenVolume/member-certification-/?branch=dev) [![Join the chat at https://gitter.im/GVHub/Lobby](https://badges.gitter.im/GVHub/Lobby.svg)](https://gitter.im/GVHub/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 # HumhubCertifiedRealModule
 This is a Humhub module where admins can certify the person as being a real person when they upload a picture of themselves with the site name and their screen name. 
 
