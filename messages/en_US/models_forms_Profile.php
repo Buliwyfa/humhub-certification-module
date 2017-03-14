@@ -1,6 +1,6 @@
 <?php
 return [
-    'Awaiting Certification' => '',
-    'Certified' => '',
-    'Certified By' => '',
+    'Awaiting Certification' => 'Awaiting Certification',
+    'Certified' => 'Certified',
+    'Certified By' => 'Certified By',
 ];
