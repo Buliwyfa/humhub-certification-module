@@ -20,11 +20,10 @@
 
 namespace humhub\modules\certified\widgets;
 
-use Yii;
 use humhub\components\Widget;
 use humhub\modules\certified\models\AwaitingCertification;
 use humhub\modules\certified\models\Profile;
-use yii;
+use Yii;
 
 /**
  * @author andystrobel
@@ -36,7 +35,7 @@ class GetCertified extends Widget
     public function run()
     {
         $model = new AwaitingCertification();
-        $profileType = Profile::find()->where(['user_id' => yii::$app->user->id ])->one();
+        $profileType = Profile::find()->where(['user_id' => Yii::$app->user->id ])->one();
         $profileType = $profileType->gender;
         return $this->render('certifiedPanel', [
                 'model' => $model,
