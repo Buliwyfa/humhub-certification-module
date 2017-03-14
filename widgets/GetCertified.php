@@ -20,6 +20,7 @@
 
 namespace humhub\modules\certified\widgets;
 
+use Yii;
 use humhub\components\Widget;
 use humhub\modules\certified\models\AwaitingCertification;
 use humhub\modules\certified\models\Profile;
