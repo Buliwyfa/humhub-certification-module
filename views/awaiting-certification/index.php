@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel humhub\modules\certified\models\AwaitingCertificationsSearch */
+/* @var $searchModel humhub\modules\certified\models\AwaitingCertificationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Awaiting Certifications';
@@ -26,12 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'user_id',
             'created_at',
-            'her_picture_guid',
-            'his_picture_guid',
-            // 'status',
-            // 'message:ntext',
+            'his_picture_url:url',
+            'her_picture_url:url',
+            'user_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -2,13 +2,17 @@
 
 namespace humhub\modules\certified\controllers;
 
-use Yii;
+use humhub\components\behaviors\AccessControl;
+use humhub\components\Controller;
+use humhub\modules\certified\libs\CertifiedHelper;
 use humhub\modules\certified\models\AwaitingCertification;
 use humhub\modules\certified\models\AwaitingCertificationSearch;
 use humhub\modules\certified\models\Profile;
-use humhub\components\Controller;
-use yii\web\NotFoundHttpException;
+use humhub\modules\certified\permissions\CertifiedAdmin;
+use humhub\modules\certified\permissions\ManageCertifications;
+use Yii;
 use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
 
 /**
  * AdminController implements the CRUD actions for AwaitingCertification model.
@@ -27,6 +31,13 @@ class AdminController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'acl' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    ['permissions' => ManageCertifications::className()],
+                    ['permissions' => CertifiedAdmin::className(), 'actions' => ['config']],
+                ],
+            ],
         ];
     }
 
@@ -36,12 +47,11 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AwaitingCertificationSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+
+        return $this->render('approve', [
+            'model' => $model,
         ]);
     }
 
@@ -92,6 +102,7 @@ class AdminController extends Controller
                 'model' => $model,
             ]);
         }
+
     }
 
     /**
@@ -100,12 +111,31 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDenyCertification ($id)
     {
-        $this->findModel($id)->delete();
+        $record = $this->findModel($id);
+        $user = Profile::find()->where(['user_id' => $record->user_id])->one();
+        $user->certified = 0;
+        $record->status = 'Needs Admin Approval';
+        $record->save();
+        $helper = CertifiedHelper::singleton();
+        $certifyAfterSubmit = $helper->checkAfterSubmit();
+        if ($certifyAfterSubmit == true) {
+            $changeUserGroup = $helper->changeGroups($record->user_id);
+            if (!($changeUserGroup == 'Moved from Certified Group')) {
+                Yii::warning('Something is wrong with the change user groups function in certified module');
 
-        return $this->redirect(['index']);
+            }
+        }
+
+        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
+
+        return $this->render('approve', [
+            'model' => $model,
+        ]);
     }
+
+
 
     /**
      * Finds the AwaitingCertification model based on its primary key value.
@@ -123,9 +153,29 @@ class AdminController extends Controller
         }
     }
 
-
-    public function setAwaitingCertification($id)
+    public function actionConfig()
     {
+        $searchModel = new AwaitingCertificationSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $this->subLayout = '/layouts/config';
+       return $this->render('config', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider]);
+    }
+
+    public function actionApproveCertification($id)
+    {
+        $awaitingCertification = AwaitingCertification::find()->where(['id' => $id])->one();
+        $userProfile = Profile::find()->where(['user_id' => $awaitingCertification->user_id])->one();
+        $userProfile->certified_by = yii::$app->user->id;
+        $userProfile->save();
+        $awaitingCertification->delete();
+
+        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
+
+        return $this->render('approve', [
+            'model' => $model,
+        ]);
 
     }
 }

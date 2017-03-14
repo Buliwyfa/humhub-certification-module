@@ -7,9 +7,10 @@ class uninstall extends Migration
     public function up()
     {
         $this->dropTable('awaiting_certification');
-        $this->dropColumn('profile', 'awaiting_certification');
         $this->dropColumn('profile', 'certified');
         $this->dropColumn('profile', 'certified_by');
+
+
     }
 
     public function down()

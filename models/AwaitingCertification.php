@@ -3,25 +3,31 @@
 namespace humhub\modules\certified\models;
 
 use humhub\components\ActiveRecord;
-use Yii;
-use yii\db\ActiveQuery;
+use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
-use humhub\modules\user\models\Profile;
 
 /**
  * This is the model class for table "awaiting_certification".
  *
  * @property integer $id
- * @property string $created_at
- * @property string $his_picture_url
- * @property string $her_picture_url
  * @property integer $user_id
+ * @property string $created_at
+ * @property string $her_picture_guid
+ * @property string $his_picture_guid
+ * @property string $status
+ * @property string $message
+ *
+ * @property string $herPictureGu
+ * @property string $hisPictureGu
+ * @property \yii\db\ActiveQuery $hisPictureGuid
+ * @property \yii\db\ActiveQuery $herPictureGuid
+ * @property User $user
  */
-class AwaitingCertification extends \humhub\components\ActiveRecord
+class AwaitingCertification extends ActiveRecord
 {
-    public $file_her;
-    public $file_him;
 
+    public $hisImage;
+    public $herImage;
     /**
      * @inheritdoc
      */
@@ -36,10 +42,17 @@ class AwaitingCertification extends \humhub\components\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at'], 'safe'],
             [['user_id'], 'integer'],
-            [['his_picture_url', 'her_picture_url'], 'string', 'max' => 255],
-            [['file_her', 'file_him'],'file'],
+            [['created_at'], 'safe'],
+            [['message'], 'string'],
+            [['her_picture_guid', 'his_picture_guid', 'status'], 'string', 'max' => 255],
+            [['user_id'], 'unique'],
+            [['her_picture_guid'], 'unique'],
+            [['his_picture_guid'], 'unique'],
+            [['her_picture_guid'], 'exist', 'skipOnError' => true, 'targetClass' => File::className(), 'targetAttribute' => ['her_picture_guid' => 'guid']],
+            [['his_picture_guid'], 'exist', 'skipOnError' => true, 'targetClass' => File::className(), 'targetAttribute' => ['his_picture_guid' => 'guid']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['hisImage', 'herImage'], 'image', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'minWidth' => 100, 'maxWidth' => 1000, 'minHeight' => 100, 'maxHeight' => 1000],
         ];
     }
 
@@ -50,13 +63,29 @@ class AwaitingCertification extends \humhub\components\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'created_at' => 'Created At',
-            'his_picture_url' => 'His Picture Url',
-            'her_picture_url' => 'Her Picture Url',
             'user_id' => 'User ID',
-            'file_her' => 'Her Picture',
-            'file_him' => 'His Picture',
+            'created_at' => 'Created At',
+            'her_picture_guid' => 'Her Picture Guid',
+            'his_picture_guid' => 'His Picture Guid',
+            'status' => 'Status',
+            'message' => 'Message',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHerPictureGuid()
+    {
+        return $this->hasOne(File::className(), ['guid' => 'her_picture_guid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHisPictureGuid()
+    {
+        return $this->hasOne(File::className(), ['guid' => 'his_picture_guid']);
     }
 
     /**
@@ -64,17 +93,6 @@ class AwaitingCertification extends \humhub\components\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['user_id' => 'id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProfile()
-    {
-        $this->hasOne(Profile::className(), ['user_id' => 'user_id']);
-
-    }
-
 }

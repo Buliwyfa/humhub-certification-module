@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model humhub\modules\certified\models\AwaitingCertificationSearch */
+/* @var $model humhub\modules\certified\models\AwaitingCertificationsSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -17,13 +17,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
+    <?= $form->field($model, 'user_id') ?>
+
     <?= $form->field($model, 'created_at') ?>
 
-    <?= $form->field($model, 'his_picture_url') ?>
+    <?= $form->field($model, 'her_picture_guid') ?>
 
-    <?= $form->field($model, 'her_picture_url') ?>
+    <?= $form->field($model, 'his_picture_guid') ?>
 
-    <?= $form->field($model, 'user_id') ?>
+    <?php // echo $form->field($model, 'status') ?>
+
+    <?php // echo $form->field($model, 'message') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

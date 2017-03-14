@@ -2,10 +2,8 @@
 
 namespace humhub\modules\certified\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use humhub\modules\certified\models\AwaitingCertification;
 
 /**
  * AwaitingCertificationSearch represents the model behind the search form about `certified\models\AwaitingCertification`.
@@ -19,7 +17,7 @@ class AwaitingCertificationSearch extends AwaitingCertification
     {
         return [
             [['id', 'user_id'], 'integer'],
-            [['created_at', 'his_picture_url', 'her_picture_url'], 'safe'],
+            [['created_at', 'his_picture_guid', 'her_picture_guid'], 'safe'],
         ];
     }
 
@@ -57,6 +55,7 @@ class AwaitingCertificationSearch extends AwaitingCertification
             return $dataProvider;
         }
 
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -64,8 +63,8 @@ class AwaitingCertificationSearch extends AwaitingCertification
             'user_id' => $this->user_id,
         ]);
 
-        $query->andFilterWhere(['like', 'his_picture_url', $this->his_picture_url])
-            ->andFilterWhere(['like', 'her_picture_url', $this->her_picture_url]);
+        $query->andFilterWhere(['like', 'his_picture_guid', $this->his_picture_guid])
+            ->andFilterWhere(['like', 'her_picture_guid', $this->her_picture_guid]);
 
         return $dataProvider;
     }

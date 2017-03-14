@@ -2,10 +2,13 @@
 
 namespace humhub\modules\certified;
 
+use humhub\modules\certified\models\Profile;
+use humhub\modules\certified\widgets\GetCertified;
 use Yii;
+use yii\base\Object;
 use yii\helpers\Url;
 
-class Events extends \yii\base\Object
+class Events extends Object
 {
 
     /**
@@ -15,32 +18,29 @@ class Events extends \yii\base\Object
      */
     public static function onTopMenuInit($event)
     {
-        $event->sender->addItem(array(
-            'label' => "Certified",
-            'icon' => '<i class="fa fa-certificate" style="color: #6fdbe8;"></i>',
-            'url' => Url::to(['/certified/default']),
-            'sortOrder' => 99999,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'certified' && Yii::$app->controller->id == 'default'),
-        ));
+        if(yii::$app->user->can(new permissions\ManageCertifications())) {
+            $event->sender->addItem(array(
+                'label' => "Certified",
+                'icon' => '<i class="fa fa-certificate" style="color: lightslategray;"></i>',
+                'url' => Url::to(['/certified/admin/index']),
+                'sortOrder' => 99999,
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'certified'),
+            ));
+        }
     }
 
-
-    /**
-     * Defines what to do if admin menu is initialized.
-     *
-     * @param $event
-     */
-    public static function onAdminMenuInit($event)
+    public static function onCertifiedSidebarInit($event)
     {
-        $event->sender->addItem(array(
-            'label' => "Certified",
-            'url' => Url::to(['/certified/admin']),
-            'group' => 'manage',
-            'icon' => '<i class="fa fa-certificate" style="color: #6fdbe8;"></i>',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'certified' && Yii::$app->controller->id == 'admin'),
-            'sortOrder' => 99999,
-        ));
+        $userProfile = Profile::find()->where(['user_id' => yii::$app->user->id])->one();
+        $certified = $userProfile->certified;
+        if (!($certified == 1)) {
+            $event->sender->addWidget(GetCertified::className(), array(), array('sortOrder' => 1));
+        }
+
+
     }
+
+
 
 }
 
