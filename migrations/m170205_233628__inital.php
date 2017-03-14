@@ -10,7 +10,7 @@ class m170205_233628__inital extends Migration
     public function up()
     {
 
-        $this->addColumn('profile', 'certified', 'boolean' );
+        $this->addColumn('profile', 'certified', 'tinyint(1)' );
         $this->addColumn('profile', 'certified_by', 'int(11)' );
 
         $this->createTable('awaiting_certification',[
@@ -24,10 +24,10 @@ class m170205_233628__inital extends Migration
             'uncertified_group_id' => Schema::TYPE_SMALLINT,
             'certified_group_id' => Schema::TYPE_SMALLINT,
         ]);
-        $this->addForeignKey('User ID', 'awaiting_certification', 'user_id', 'user', 'id');
+        //$this->addForeignKey('User ID', 'awaiting_certification', 'user_id', 'user', 'id');
 
-        $this->addForeignKey('Her Picture', 'awaiting_certification','her_picture_guid', 'file','guid');
-        $this->addForeignKey('His Picture', 'awaiting_certification','his_picture_guid', 'file','guid');
+        //$this->addForeignKey('Her Picture', 'awaiting_certification','her_picture_guid', 'file','guid');
+        //$this->addForeignKey('His Picture', 'awaiting_certification','his_picture_guid', 'file','guid');
 
         $this->insert('setting', ['name' => 'Uncertified Users', 'value' => 'Uncertified Users', 'module_id' => 'certified']);
 

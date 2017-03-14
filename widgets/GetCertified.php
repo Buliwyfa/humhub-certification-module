@@ -23,6 +23,7 @@ namespace humhub\modules\certified\widgets;
 use humhub\components\Widget;
 use humhub\modules\certified\models\AwaitingCertification;
 use humhub\modules\certified\models\Profile;
+use yii;
 
 /**
  * @author andystrobel

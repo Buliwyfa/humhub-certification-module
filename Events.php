@@ -32,6 +32,7 @@ class Events extends Object
     public static function onCertifiedSidebarInit($event)
     {
         $userProfile = Profile::find()->where(['user_id' => yii::$app->user->id])->one();
+
         $certified = $userProfile->certified;
         if (!($certified == 1)) {
             $event->sender->addWidget(GetCertified::className(), array(), array('sortOrder' => 1));

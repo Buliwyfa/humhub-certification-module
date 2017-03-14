@@ -11,6 +11,8 @@ namespace humhub\modules\certified\libs;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupPermission;
 use humhub\modules\user\models\GroupUser;
+use yii;
+
 
 class CertifiedHelper
 {

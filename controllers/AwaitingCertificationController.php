@@ -105,6 +105,7 @@ class AwaitingCertificationController extends Controller
             $profile->save();
             $model->save();
 
+
         }
 
         return $this->redirect(Url::toRoute('/dashboard/dashboard'));
