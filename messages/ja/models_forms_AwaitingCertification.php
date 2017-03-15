@@ -6,4 +6,6 @@ return [
     'User ID' => 'ユーザーID',
     'Her Picture' => '彼女の絵',
     'His Picture' => '彼のの絵',
+    'Certified By' => '',
+    'Certified' => '',
 ];

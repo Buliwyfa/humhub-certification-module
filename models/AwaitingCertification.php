@@ -5,6 +5,7 @@ namespace humhub\modules\certified\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * This is the model class for table "awaiting_certification".

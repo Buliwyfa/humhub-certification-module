@@ -8,9 +8,6 @@ $this->title = 'Certification';
 ?>
 <div class="panel panel-default panel-tour" id="Certified Panel">
 
-    <!-- Display panel menu widget -->
-    <?php echo \humhub\widgets\PanelMenu::widget(array('id' => 'getting-started-panel')); ?>
-
     <div class="panel-heading">
         <?php echo '<strong>Get</strong> Certified'; ?>
     </div>
