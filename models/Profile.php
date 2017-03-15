@@ -31,9 +31,7 @@ class Profile extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
-            [['user_id', 'certified', 'certified_by'], 'integer'],
-            [['user_id'], 'exist', 'skipOnError' => false, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['certified', 'certified_by'], 'integer'],
         ];
     }
 
@@ -43,7 +41,6 @@ class Profile extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'user_id' => Yii::t('CertifiedModule.models_forms_Profile', 'User ID'),
             'certified' => Yii::t('CertifiedModule.models_forms_Profile', 'Certified'),
             'certified_by' => Yii::t('CertifiedModule.models_forms_Profile', 'Certified By'),
         ];
