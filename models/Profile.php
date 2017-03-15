@@ -9,13 +9,12 @@ use Yii;
 /**
  * This is the model class for table "profile".
  *
- * @property integer $user_id
  * @property integer $certified
  * @property integer $certified_by
  *
  * @property User $user
  */
-class Profile extends ActiveRecord
+class Profile extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
