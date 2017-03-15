@@ -6,7 +6,6 @@ use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
 use humhub\modules\certified\libs\CertifiedHelper;
 use humhub\modules\certified\models\AwaitingCertification;
-use humhub\modules\certified\models\AwaitingCertificationSearch;
 use humhub\modules\certified\models\Profile;
 use humhub\modules\certified\permissions\CertifiedAdmin;
 use humhub\modules\certified\permissions\ManageCertifications;
@@ -53,56 +52,6 @@ class AdminController extends Controller
         return $this->render('approve', [
             'model' => $model,
         ]);
-    }
-
-    /**
-     * Displays a single AwaitingCertification model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new AwaitingCertification model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new AwaitingCertification();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing AwaitingCertification model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-
     }
 
     /**
@@ -153,16 +102,29 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Renders the config page in the admin section.
+     *
+     * Todo: Needs to add in the custom options
+     * Todo: Add custom message
+     * Todo: Add custom certified group name
+     * Todo: Add custom uncertified group name
+     * Todo: Add custom option to automatically certify after upload or not
+     *
+     * @return string
+     */
     public function actionConfig()
     {
-        $searchModel = new AwaitingCertificationSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $this->subLayout = '/layouts/config';
-       return $this->render('config', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider]);
+       return $this->render('config');
     }
 
+    /**
+     * Approves the user by marking
+     *
+     * @param $id
+     * @return string
+     */
     public function actionApproveCertification($id)
     {
         $awaitingCertification = AwaitingCertification::find()->where(['id' => $id])->one();
