@@ -48,7 +48,7 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
+        $model = AwaitingCertification::find()->where(['status' => Yii::t('CertifiedModule.controllers_AdminController', 'Awaiting approval'])->all();
 
 
         return $this->render('approve', [
@@ -67,19 +67,19 @@ class AdminController extends Controller
         $record = $this->findModel($id);
         $user = Profile::find()->where(['user_id' => $record->user_id])->one();
         $user->certified = 0;
-        $record->status = 'Needs Admin Approval';
+        $record->status = Yii::t('CertifiedModule.controllers_AdminController', 'Needs Admin Approval');
         $record->save();
         $helper = CertifiedHelper::singleton();
         $certifyAfterSubmit = $helper->checkAfterSubmit();
         if ($certifyAfterSubmit == true) {
             $changeUserGroup = $helper->changeGroups($record->user_id);
-            if (!($changeUserGroup == 'Moved from Certified Group')) {
-                Yii::warning('Something is wrong with the change user groups function in certified module');
+            if (!($changeUserGroup == Yii::t('CertifiedModule.controllers_AdminController', 'Moved from Certified Group')) {
+                Yii::warning(Yii::t('CertifiedModule.controllers_AdminController', 'Something is wrong with the change user groups function in certified module'));
 
             }
         }
 
-        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
+        $model = AwaitingCertification::find()->where(['status' => Yii::t('CertifiedModule.controllers_AdminController', 'Awaiting approval'])->all();
 
         return $this->render('approve', [
             'model' => $model,
@@ -100,7 +100,7 @@ class AdminController extends Controller
         if (($model = AwaitingCertification::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('CertifiedModule.controllers_AdminController', 'The requested page does not exist.'));
         }
     }
 
@@ -145,7 +145,7 @@ class AdminController extends Controller
         $awaitingCertification->delete();
 
 
-        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
+        $model = AwaitingCertification::find()->where(['status' => Yii::t('CertifiedModule.controllers_AdminController', 'Awaiting approval'])->all();
 
         return $this->render('approve', [
             'model' => $model,
