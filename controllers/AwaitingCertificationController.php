@@ -73,7 +73,7 @@ class AwaitingCertificationController extends Controller
             $needsApproval = false;
 
             foreach ($records as $record) {
-                if (($record->status) == 'Needs Admin Approval') {
+                if (($record->status) == Yii::t('CertifiedModule.controllers_AwaitingCertificationController', 'Needs Admin Approval') {
                     $needsApproval = true;
                 }
             }
@@ -96,8 +96,8 @@ class AwaitingCertificationController extends Controller
             if($needsApproval == false && $tempCertifyAfterSubmit == true) {
 
                 $changeUserGroup = $helper->changeGroups($model->user_id);
-                if (!($changeUserGroup == 'Moved from Uncertified Group')) {
-                    yii::warning('Something went wrong in the certified module change user groups in AwaitingCertificationController');
+                if (!($changeUserGroup == Yii::t('CertifiedModule.controllers_AwaitingCertificationController', 'Moved from Uncertified Group')) {
+                    Yii::warning(Yii::t('CertifiedModule.controllers_AwaitingCertificationController', 'Something went wrong in the certified module change user groups in AwaitingCertificationController'));
                 }
             }
 
@@ -128,8 +128,8 @@ class AwaitingCertificationController extends Controller
         $pictureGuid = $this->saveImage($model, $name);
         if ($pictureGuid !== false){
             return $pictureGuid;
-        } throw new HttpException('Could not save ' . $name . ' image.
-        Please resubmit or notify admin.');
+        } throw new HttpException(Yii::t('CertifiedModule.controllers_AwaitingCertificationController', 'Could not save ' . $name . ' image.
+        Please resubmit or notify admin.'));
     }
 
     /**
