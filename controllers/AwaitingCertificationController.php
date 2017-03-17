@@ -73,7 +73,7 @@ class AwaitingCertificationController extends Controller
             $needsApproval = false;
 
             foreach ($records as $record) {
-                if (($record->status) == 'Needs Admin Approval' {
+                if (($record->status) == 'Needs Admin Approval') {
                     $needsApproval = true;
                 }
             }
