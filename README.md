@@ -12,25 +12,26 @@ With the Custom Mail Module. This module gives admin the ability to control who 
 
 Screen Shoot one.
 
-`Needs re-added`
+<img src="https://github.com/GreenVolume/humhub-certification-module/blob/master/assets/screenshots/certified.JPG?raw=true" alt="Smiley face" height="auto" width="600">
 
 User doesn't have mail permission. No mail button to click.
 
 Screen Shoot two.
 
-`Needs re-added`
+
+<img src="https://github.com/GreenVolume/humhub-certification-module/blob/master/assets/screenshots/certified1.JPG?raw=true" alt="Smiley face" height="auto" width="600">
 
 User just uploaded picture. Now has mail prmission. Mail button.
 
 Screen Shoot three.
 
-`Needs re-added`
+<img src="https://github.com/GreenVolume/humhub-certification-module/blob/master/assets/screenshots/certified2.JPG?raw=true" alt="Smiley face" height="auto" width="600">
 
-This user has permission to access the certify module page to certify users after they have uploaded a picture.
+This user has been granted permission to access the certify module page to certify users after they have uploaded a picture.
 
 Screen Shoot four.
 
-`Needs re-added`
+<img src="https://github.com/GreenVolume/humhub-certification-module/blob/master/assets/screenshots/certified3.JPG?raw=true" alt="Smiley face" height="auto" width="600">
 
 This is currently what the certified admin page looks like to certify a user as real. It needs more cosmetics done to it and will be done in the future. I'm not worried about how the admin section looks right now. Just that it works. Which it doesn't all the way at this current time.
 
