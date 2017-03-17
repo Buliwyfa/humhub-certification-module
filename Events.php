@@ -5,7 +5,6 @@ namespace humhub\modules\certified;
 use humhub\modules\certified\models\Profile;
 use humhub\modules\certified\widgets\GetCertified;
 use Yii;
-use yii\base\Object;
 use yii\helpers\Url;
 
 class Events extends \yii\base\Object
@@ -29,6 +28,9 @@ class Events extends \yii\base\Object
         }
     }
 
+    /**
+     * @param $event
+     */
     public static function onCertifiedSidebarInit($event)
     {
         $userProfile = Profile::find()->where(['user_id' => yii::$app->user->id])->one();
