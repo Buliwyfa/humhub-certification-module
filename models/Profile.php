@@ -2,7 +2,6 @@
 
 namespace humhub\modules\certified\models;
 
-use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
 use Yii;
 

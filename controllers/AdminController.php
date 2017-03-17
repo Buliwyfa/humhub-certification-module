@@ -132,20 +132,13 @@ class AdminController extends Controller
      */
     public function actionApproveCertification($id)
     {
-        $awaitingCertification = AwaitingCertification::find()->where(['user_id' => $id])->one();
+        $awaitingCertification = $this->findModel($id);
         $userProfile = Profile::find()->where(['user_id' => $awaitingCertification->user_id])->one();
         $userProfile->certified_by = yii::$app->user->id;
         $userProfile->save();
-        $pictureGuid = [];
-        if (($awaitingCertification->her_picture_guid) != null ) {
-            $pictureGuid = $awaitingCertification->her_picture_guid;
-        }
-        if (($awaitingCertification->his_picture_guid) != null) {
-            $pictureGuid = $awaitingCertification->his_picture_guid;
-        }
-        foreach ($pictureGuid as $picture) {
-            File::find()->where(['guid' => $picture])->one()->delete();
-        }
+        $this->deltePicures($awaitingCertification->her_picture_guid);
+        $this->deltePicures($awaitingCertification->his_picture_guid);
+
         $model = new ContentContainerPermission();
         $model->permission_id = 'humhub\modules\mail\permissions\RecieveMail';
         $model->contentcontainer_id = $awaitingCertification->user_id;
@@ -153,6 +146,7 @@ class AdminController extends Controller
         $model->module_id = 'mail';
         $model->class = 'humhub\modules\mail\permissions\RecieveMail';
         $model->state = 1;
+        $model->save();
 
         $awaitingCertification->delete();
 
@@ -163,5 +157,13 @@ class AdminController extends Controller
             'model' => $model,
         ]);
 
+    }
+
+    public function deltePicures($guid)
+    {
+        if ($guid !== null) {
+            File::find()->where(['guid' => $guid])->one()->delete();
+        }
+        return;
     }
 }

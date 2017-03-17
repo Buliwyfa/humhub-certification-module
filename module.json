@@ -1,12 +1,12 @@
 {
     "id": "certified",
     "name": "Certified",
-    "description": "An automatically generated HumHub module to help you get started quickly.",
+    "description": "A module used to certify users as real people.",
     "keywords": [
     ],
-    "version": "0.1",
+    "version": "1.0",
     "humhub": {
-        "minVersion": "0.8"
+        "minVersion": "1.2"
     },
     "screenshots": ["assets/screen1.jpg"]
 }
