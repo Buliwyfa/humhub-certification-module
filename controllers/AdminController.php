@@ -79,7 +79,7 @@ class AdminController extends Controller
             }
         }
 
-        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval')->all();
+        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
 
         return $this->render('approve', [
             'model' => $model,
@@ -145,7 +145,7 @@ class AdminController extends Controller
         $awaitingCertification->delete();
 
 
-        $model = AwaitingCertification::find()->where(['status' =>'Awaiting approval')->all();
+        $model = AwaitingCertification::find()->where(['status' =>'Awaiting approval'])->all();
 
         return $this->render('approve', [
             'model' => $model,
