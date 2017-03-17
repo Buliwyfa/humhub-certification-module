@@ -9,6 +9,8 @@ use humhub\modules\certified\models\AwaitingCertification;
 use humhub\modules\certified\models\Profile;
 use humhub\modules\certified\permissions\CertifiedAdmin;
 use humhub\modules\certified\permissions\ManageCertifications;
+use humhub\modules\content\models\ContentContainerPermission;
+use humhub\modules\file\models\File;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
@@ -110,6 +112,7 @@ class AdminController extends Controller
      * Todo: Add custom certified group name
      * Todo: Add custom uncertified group name
      * Todo: Add custom option to automatically certify after upload or not
+     * Todo: Add custom option to mark users as able to email each other after certification
      *
      * @return string
      */
@@ -120,18 +123,39 @@ class AdminController extends Controller
     }
 
     /**
-     * Approves the user by marking
+     * Changes profile attribute certified to 1, deletes the picture by its guid,
+     * delets AwaitingCertification record, and changes user permissions to allow
+     * others to mail the user.
      *
      * @param $id
      * @return string
      */
     public function actionApproveCertification($id)
     {
-        $awaitingCertification = AwaitingCertification::find()->where(['id' => $id])->one();
+        $awaitingCertification = AwaitingCertification::find()->where(['user_id' => $id])->one();
         $userProfile = Profile::find()->where(['user_id' => $awaitingCertification->user_id])->one();
         $userProfile->certified_by = yii::$app->user->id;
         $userProfile->save();
+        $pictureGuid = [];
+        if (($awaitingCertification->her_picture_guid) != null ) {
+            $pictureGuid = $awaitingCertification->her_picture_guid;
+        }
+        if (($awaitingCertification->his_picture_guid) != null) {
+            $pictureGuid = $awaitingCertification->his_picture_guid;
+        }
+        foreach ($pictureGuid as $picture) {
+            File::find()->where(['guid' => $picture])->one()->delete();
+        }
+        $model = new ContentContainerPermission();
+        $model->permission_id = 'humhub\modules\mail\permissions\RecieveMail';
+        $model->contentcontainer_id = $awaitingCertification->user_id;
+        $model->group_id = 'u_user';
+        $model->module_id = 'mail';
+        $model->class = 'humhub\modules\mail\permissions\RecieveMail';
+        $model->state = 1;
+
         $awaitingCertification->delete();
+
 
         $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
 
