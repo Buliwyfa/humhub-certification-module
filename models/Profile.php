@@ -39,8 +39,8 @@ class Profile extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'certified' => Yii::t('CertifiedModule.models_forms_Profile', 'Certified'),
-            'certified_by' => Yii::t('CertifiedModule.models_forms_Profile', 'Certified By'),
+            'certified' => Yii::t('CertifiedModule.models_Profile', 'Certified'),
+            'certified_by' => Yii::t('CertifiedModule.models_Profile', 'Certified By'),
         ];
     }
 

@@ -74,12 +74,12 @@ class AdminController extends Controller
         if ($certifyAfterSubmit == true) {
             $changeUserGroup = $helper->changeGroups($record->user_id);
             if (!($changeUserGroup == 'Moved from Certified Group')) {
-                Yii::warning('Something is wrong with the change user groups function in certified module');
+                Yii::warning(Yii::t('CertifiedModule.controllers_AdminController', 'Something is wrong with the change user groups function in certified module'));
 
             }
         }
 
-        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
+        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval')->all();
 
         return $this->render('approve', [
             'model' => $model,
@@ -100,7 +100,7 @@ class AdminController extends Controller
         if (($model = AwaitingCertification::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('CertifiedModule.controllers_AdminController', 'The requested page does not exist.'));
         }
     }
 
@@ -145,7 +145,7 @@ class AdminController extends Controller
         $awaitingCertification->delete();
 
 
-        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
+        $model = AwaitingCertification::find()->where(['status' =>'Awaiting approval')->all();
 
         return $this->render('approve', [
             'model' => $model,
