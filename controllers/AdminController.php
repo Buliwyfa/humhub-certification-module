@@ -48,7 +48,7 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $model = AwaitingCertification::find()->where(['status' => Yii::t('CertifiedModule.controllers_AdminController', 'Awaiting approval'])->all();
+        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
 
 
         return $this->render('approve', [
@@ -67,13 +67,13 @@ class AdminController extends Controller
         $record = $this->findModel($id);
         $user = Profile::find()->where(['user_id' => $record->user_id])->one();
         $user->certified = 0;
-        $record->status = Yii::t('CertifiedModule.controllers_AdminController', 'Needs Admin Approval');
+        $record->status = 'Needs Admin Approval';
         $record->save();
         $helper = CertifiedHelper::singleton();
         $certifyAfterSubmit = $helper->checkAfterSubmit();
         if ($certifyAfterSubmit == true) {
             $changeUserGroup = $helper->changeGroups($record->user_id);
-            if (!($changeUserGroup == Yii::t('CertifiedModule.controllers_AdminController', 'Moved from Certified Group')) {
+            if (!($changeUserGroup == 'Moved from Certified Group')) {
                 Yii::warning(Yii::t('CertifiedModule.controllers_AdminController', 'Something is wrong with the change user groups function in certified module'));
 
             }
