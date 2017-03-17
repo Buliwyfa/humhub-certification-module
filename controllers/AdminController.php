@@ -136,18 +136,11 @@ class AdminController extends Controller
         $userProfile = Profile::find()->where(['user_id' => $awaitingCertification->user_id])->one();
         $userProfile->certified_by = yii::$app->user->id;
         $userProfile->save();
-        $this->deltePicures($awaitingCertification->her_picture_guid);
-        $this->deltePicures($awaitingCertification->his_picture_guid);
 
-        $model = new ContentContainerPermission();
-        $model->permission_id = 'humhub\modules\mail\permissions\RecieveMail';
-        $model->contentcontainer_id = $awaitingCertification->user_id;
-        $model->group_id = 'u_user';
-        $model->module_id = 'mail';
-        $model->class = 'humhub\modules\mail\permissions\RecieveMail';
-        $model->state = 1;
-        $model->save();
+        $this->deletePictures($awaitingCertification->her_picture_guid);
+        $this->deletePictures($awaitingCertification->his_picture_guid);
 
+        $this->enableUserToRecieveMail($awaitingCertification->user_id);
 
         $awaitingCertification->delete();
 
@@ -160,11 +153,45 @@ class AdminController extends Controller
 
     }
 
-    public function deltePicures($guid)
+    /**
+     * Finds the pictures by its guid and deletes it.
+     *
+     * @param $guid
+     */
+    public function deletePictures($guid)
     {
         if ($guid !== null) {
-            File::find()->where(['guid' => $guid])->one()->delete();
+            $file = File::find()->where(['guid' => $guid])->one();
+            if ($file){
+                $file->delete();
+            }
         }
         return;
+    }
+
+    /**
+     * Addes two permission to the contentContainerPermissions
+     * for u_user and u_friend. Allowing both other users and other friends
+     * to send the user mail.
+     *
+     * Todo: Keep an eye on Humhub to see if the contentContainer starts storing the correct user id
+     *
+     *
+     * @param $user_id
+     */
+    private function enableUserToRecieveMail($user_id)
+    {
+        $groupIDs = ['u_user', 'u_friend'];
+        foreach ($groupIDs as $groupid){
+            $model = new ContentContainerPermission();
+            $model->permission_id = 'humhub\modules\mail\permissions\RecieveMail';
+            $model->contentcontainer_id = $user_id + 1; // The content container permissions stores the incorrect user id.
+            $model->group_id = $groupid;
+            $model->module_id = 'mail';
+            $model->class = 'humhub\modules\mail\permissions\RecieveMail';
+            $model->state = 1;
+            $model->save();
+        }
+
     }
 }

@@ -22,13 +22,23 @@ class CertifiedHelper
     protected $module;
     protected $certifiedSettingsLoaded = false;
 
+    /**
+     *Checks to see if the groups permission are set.
+     */
     public function init()
     {
         $this->checkGroupPermissions();
         $this->module = yii::$app->getModule('certified');
     }
 
-    // The singleton method
+
+    /**
+     * Looks to if itself is set with an instance and if it isn't
+     * then it sets one and returns that instance. To stop the
+     * helper from making more than one instance.
+     *
+     * @return CertifiedHelper
+     */
     public static function singleton()
     {
 
@@ -39,6 +49,9 @@ class CertifiedHelper
     }
 
     /**
+     * Checks the settings to see if the module should certify the user
+     * after they submit a picture.
+     *
      * @return bool
      */
     public function checkAfterSubmit()
@@ -52,6 +65,10 @@ class CertifiedHelper
         return true;
     }
 
+    /**
+     *  Checks the groups for group permission to make sure that the groups
+     * have the correct mail permission.
+     */
     public function checkGroupPermissions()
     {
         if (($this->certifiedSettingsLoaded) == false ) {
@@ -71,6 +88,13 @@ class CertifiedHelper
 
     }
 
+    /**
+     * Compares the group_id that is passed in and sees if its apart of
+     * the uncertified or certified group. Returns a string for group representation.
+     *
+     * @param $group_id
+     * @return string (Certified or Uncertified)
+     */
     protected function compareGroupId($group_id)
     {
         $certifiedUsers = $this->findGroup($this->certifiedUsersGroup);
@@ -84,11 +108,19 @@ class CertifiedHelper
         }
     }
 
+    /**
+     * Makes sure that the name of this module is set to certified.
+     *
+     */
     protected function getModule()
     {
         $this->module = yii::$app->getModule('certified');
     }
 
+    /**
+     *Checks the module settings to see if the default uncertified user groups or if
+     * the certified user group has been changed.
+     */
     public function checkGroups()
     {
         $this->getModule();
@@ -99,6 +131,14 @@ class CertifiedHelper
 
     }
 
+    /**
+     * Checks to see if the group exists and if it doesn't then it creates the
+     * group.
+     *
+     * @param $groupName
+     * @param $groupDescription
+     * @return bool
+     */
     protected function groupExists ($groupName, $groupDescription)
     {
         $group = $this->findGroup($groupName);
@@ -108,14 +148,28 @@ class CertifiedHelper
         return true;
     }
 
+    /**
+     * Stores the group into the database.
+     *
+     * @param $groupName
+     * @param $groupDiscription
+     */
     protected function addGroup($groupName, $groupDiscription)
     {
         $newGroup = new Group();
         $newGroup->created_by = yii::$app->user->id;
         $newGroup->name = $groupName;
         $newGroup->description = $groupDiscription;
+        $newGroup->save();
     }
 
+    /**
+     * Checks if the user is apart of the uncertified or certified group
+     * and then switches him from one to the other.
+     *
+     * @param $userId
+     * @return string
+     */
     public function changeGroups($userId)
     {
         $certifiedGroupId = $this->findGroup($this->certifiedUsersGroup);
@@ -130,6 +184,13 @@ class CertifiedHelper
         return 'Moved from Certified Group';
     }
 
+    /**
+     * Adds the user to the group.
+     *
+     * @param $userId
+     * @param $groupName
+     * @return bool
+     */
     protected function addToGroup($userId, $groupName)
     {
         $groupId = $this->findGroup($groupName);
@@ -143,6 +204,13 @@ class CertifiedHelper
         return false;
     }
 
+    /**
+     * removes the user from the group.
+     *
+     * @param $userId
+     * @param $groupName
+     * @return bool
+     */
     protected function removeFromGroup($userId, $groupName)
     {
         $groupId = $this->findGroup($groupName);
@@ -154,6 +222,13 @@ class CertifiedHelper
         return true;
     }
 
+    /**
+     * checks if the user is apart of the group.
+     *
+     * @param $groupId
+     * @param $userId
+     * @return array|bool|null|yii\db\ActiveRecord
+     */
     protected function findGroupUser($groupId, $userId)
     {
         $record = GroupUser::find()->where(['user_id' => $userId])->andWhere(['group_id' => $groupId])->one();
@@ -164,6 +239,12 @@ class CertifiedHelper
          return false;
     }
 
+    /**
+     * finds the group id by searching for the groups name.
+     *
+     * @param $groupName
+     * @return bool
+     */
     protected function findGroup($groupName)
     {
         $group = Group::find()->where(['name' => $groupName])->one();
