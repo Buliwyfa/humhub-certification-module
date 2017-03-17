@@ -20,7 +20,7 @@ class Events extends \yii\base\Object
     {
         if(yii::$app->user->can(new permissions\ManageCertifications())) {
             $event->sender->addItem(array(
-                'label' => Yii::t('CertifiedModule.models_forms_Profile', 'Certified'),
+                'label' => Yii::t('CertifiedModule.models_Profile', 'Certified'),
                 'icon' => '<i class="fa fa-certificate" style="color: lightslategray;"></i>',
                 'url' => Url::to(['/certified/admin/index']),
                 'sortOrder' => 99999,
