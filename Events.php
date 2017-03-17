@@ -8,7 +8,7 @@ use Yii;
 use yii\base\Object;
 use yii\helpers\Url;
 
-class Events extends Object
+class Events extends \yii\base\Object
 {
 
     /**
