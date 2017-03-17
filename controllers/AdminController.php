@@ -148,6 +148,7 @@ class AdminController extends Controller
         $model->state = 1;
         $model->save();
 
+
         $awaitingCertification->delete();
 
 

@@ -17,7 +17,7 @@ use yii;
 class CertifiedHelper
 {
     private static $instance;
-    protected $uncertifiedUsersGroup = 'Uncertified Users Group';
+    protected $uncertifiedUsersGroup = 'Uncertified Users';
     protected $certifiedUsersGroup = 'Users';
     protected $module;
     protected $certifiedSettingsLoaded = false;
