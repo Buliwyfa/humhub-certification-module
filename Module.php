@@ -2,6 +2,8 @@
 
 namespace humhub\modules\certified;
 
+use humhub\modules\space\models\Space;
+
 /**
  *
  * @property mixed $configUrl
