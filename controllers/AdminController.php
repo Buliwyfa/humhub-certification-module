@@ -59,6 +59,9 @@ class AdminController extends Controller
     /**
      * Deletes an existing AwaitingCertification model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
+     *
+     * todo: fix when user needs admin approval, user rebsubmitted image doesn't show up on approval page.
+     * todo: enhancement-> if the user is denyied add a custom message option to tell the user why.
      * @param integer $id
      * @return mixed
      */
