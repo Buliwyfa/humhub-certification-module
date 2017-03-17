@@ -9,7 +9,7 @@ $this->title = 'Certification';
 <div class="panel panel-default panel-tour" id="Certified Panel">
 
     <div class="panel-heading">
-        <?php echo '<strong>Get</strong> Certified'; ?>
+        <?php echo Yii::t('CertifiedModule.widgets_views_certifiedPanel', '<strong>Get</strong> Certified'; ?>
     </div>
     <div class="panel-body">
         <p>
