@@ -2,6 +2,8 @@
 
 namespace humhub\modules\certified;
 
+use humhub\modules\space\models\Space;
+
 /**
  *
  * @property mixed $configUrl
@@ -23,10 +25,16 @@ class Module extends \humhub\components\Module
      */
     public function getPermissions($contentContainer = null)
     {
-        return [
-            new permissions\ManageCertifications(),
-            new permissions\CertifiedAdmin(),
-        ];
+
+        if($contentContainer instanceof Space){
+            return [
+                new permissions\ManageCertifications(),
+                new permissions\CertifiedAdmin(),
+            ];
+        };
+        return [];
+
+
     }
 
 }

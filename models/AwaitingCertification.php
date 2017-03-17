@@ -5,6 +5,7 @@ namespace humhub\modules\certified\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * This is the model class for table "awaiting_certification".
@@ -62,14 +63,14 @@ class AwaitingCertification extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'created_at' => 'Created At',
-            'her_picture_guid' => 'Her Picture Guid',
-            'his_picture_guid' => 'His Picture Guid',
-            'status' => 'Status',
-            'message' => 'Message',
-        ];
+            'id' => Yii::t('CertifiedModule.models_AwaitingCertification', 'Id'),
+            'user_id' => Yii::t('CertifiedModule.models_AwaitingCertification', 'User ID'),
+            'created_at' => Yii::t('CertifiedModule.models_AwaitingCertification', 'Created At'),
+            'her_picture_guid' => Yii::t('CertifiedModule.models_AwaitingCertification', 'Her Picture Guid'),
+            'his_picture_guid' => Yii::t('CertifiedModule.models_AwaitingCertification', 'His Picture Guid'),
+            'status' => Yii::t('CertifiedModule.models_AwaitingCertification', 'Status'),
+            'message' => Yii::t('CertifiedModule.models_AwaitingCertification', 'Message'),
+        ]; 
     }
 
     /**
