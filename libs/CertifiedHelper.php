@@ -85,7 +85,15 @@ class CertifiedHelper
                 }
             }
         }
+        $this->doNotShowGroupsAtRegistration($this->certifiedUsersGroup);
+        $this->doNotShowGroupsAtRegistration($this->uncertifiedUsersGroup);
+    }
 
+    protected function doNotShowGroupsAtRegistration($groupName)
+    {
+        $group = Group::find()->where(['name' => $groupName])->one();
+        $group->show_at_registration = 0;
+        $group->show_at_directory = 0;
     }
 
     /**
