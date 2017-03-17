@@ -5,10 +5,9 @@ namespace humhub\modules\certified;
 use humhub\modules\certified\models\Profile;
 use humhub\modules\certified\widgets\GetCertified;
 use Yii;
-use yii\base\Object;
 use yii\helpers\Url;
 
-class Events extends Object
+class Events extends \yii\base\Object
 {
 
     /**
@@ -20,7 +19,7 @@ class Events extends Object
     {
         if(yii::$app->user->can(new permissions\ManageCertifications())) {
             $event->sender->addItem(array(
-                'label' => "Certified",
+                'label' => Yii::t('CertifiedModule.models_Profile', 'Certified'),
                 'icon' => '<i class="fa fa-certificate" style="color: lightslategray;"></i>',
                 'url' => Url::to(['/certified/admin/index']),
                 'sortOrder' => 99999,
@@ -29,9 +28,13 @@ class Events extends Object
         }
     }
 
+    /**
+     * @param $event
+     */
     public static function onCertifiedSidebarInit($event)
     {
         $userProfile = Profile::find()->where(['user_id' => yii::$app->user->id])->one();
+
         $certified = $userProfile->certified;
         if (!($certified == 1)) {
             $event->sender->addWidget(GetCertified::className(), array(), array('sortOrder' => 1));

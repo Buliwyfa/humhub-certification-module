@@ -2,14 +2,12 @@
 
 namespace humhub\modules\certified\models;
 
-use yii\db\ActiveQuery;
-
 /**
- * This is the ActiveQuery class for [[Profile]].
+ * This is the ActiveQuery class for [[AwaitingCertification]].
  *
- * @see Profile
+ * @see AwaitingCertification
  */
-class ProfileQuery extends ActiveQuery
+class AwaitingCertificationQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -18,7 +16,7 @@ class ProfileQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Profile[]|array
+     * @return AwaitingCertification[]|array
      */
     public function all($db = null)
     {
@@ -27,7 +25,7 @@ class ProfileQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Profile|array|null
+     * @return AwaitingCertification|array|null
      */
     public function one($db = null)
     {

@@ -6,10 +6,11 @@ use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
 use humhub\modules\certified\libs\CertifiedHelper;
 use humhub\modules\certified\models\AwaitingCertification;
-use humhub\modules\certified\models\AwaitingCertificationSearch;
 use humhub\modules\certified\models\Profile;
 use humhub\modules\certified\permissions\CertifiedAdmin;
 use humhub\modules\certified\permissions\ManageCertifications;
+use humhub\modules\content\models\ContentContainerPermission;
+use humhub\modules\file\models\File;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
@@ -56,56 +57,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Displays a single AwaitingCertification model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new AwaitingCertification model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new AwaitingCertification();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing AwaitingCertification model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-
-    }
-
-    /**
      * Deletes an existing AwaitingCertification model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -123,7 +74,7 @@ class AdminController extends Controller
         if ($certifyAfterSubmit == true) {
             $changeUserGroup = $helper->changeGroups($record->user_id);
             if (!($changeUserGroup == 'Moved from Certified Group')) {
-                Yii::warning('Something is wrong with the change user groups function in certified module');
+                Yii::warning(Yii::t('CertifiedModule.controllers_AdminController', 'Something is wrong with the change user groups function in certified module'));
 
             }
         }
@@ -149,33 +100,98 @@ class AdminController extends Controller
         if (($model = AwaitingCertification::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('CertifiedModule.controllers_AdminController', 'The requested page does not exist.'));
         }
     }
 
+    /**
+     * Renders the config page in the admin section.
+     *
+     * Todo: Needs to add in the custom options
+     * Todo: Add custom message
+     * Todo: Add custom certified group name
+     * Todo: Add custom uncertified group name
+     * Todo: Add custom option to automatically certify after upload or not
+     * Todo: Add custom option to mark users as able to email each other after certification
+     *
+     * @return string
+     */
     public function actionConfig()
     {
-        $searchModel = new AwaitingCertificationSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $this->subLayout = '/layouts/config';
-       return $this->render('config', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider]);
+       return $this->render('config');
     }
 
+    /**
+     * Changes profile attribute certified to 1, deletes the picture by its guid,
+     * delets AwaitingCertification record, and changes user permissions to allow
+     * others to mail the user.
+     *
+     * @param $id
+     * @return string
+     */
     public function actionApproveCertification($id)
     {
-        $awaitingCertification = AwaitingCertification::find()->where(['id' => $id])->one();
+        $awaitingCertification = $this->findModel($id);
         $userProfile = Profile::find()->where(['user_id' => $awaitingCertification->user_id])->one();
         $userProfile->certified_by = yii::$app->user->id;
         $userProfile->save();
+
+        $this->deletePictures($awaitingCertification->her_picture_guid);
+        $this->deletePictures($awaitingCertification->his_picture_guid);
+
+        $this->enableUserToRecieveMail($awaitingCertification->user_id);
+
         $awaitingCertification->delete();
 
-        $model = AwaitingCertification::find()->where(['status' => 'Awaiting approval'])->all();
+
+        $model = AwaitingCertification::find()->where(['status' =>'Awaiting approval'])->all();
 
         return $this->render('approve', [
             'model' => $model,
         ]);
+
+    }
+
+    /**
+     * Finds the pictures by its guid and deletes it.
+     *
+     * @param $guid
+     */
+    public function deletePictures($guid)
+    {
+        if ($guid !== null) {
+            $file = File::find()->where(['guid' => $guid])->one();
+            if ($file){
+                $file->delete();
+            }
+        }
+        return;
+    }
+
+    /**
+     * Addes two permission to the contentContainerPermissions
+     * for u_user and u_friend. Allowing both other users and other friends
+     * to send the user mail.
+     *
+     * Todo: Keep an eye on Humhub to see if the contentContainer starts storing the correct user id
+     *
+     *
+     * @param $user_id
+     */
+    private function enableUserToRecieveMail($user_id)
+    {
+        $groupIDs = ['u_user', 'u_friend'];
+        foreach ($groupIDs as $groupid){
+            $model = new ContentContainerPermission();
+            $model->permission_id = 'humhub\modules\mail\permissions\RecieveMail';
+            $model->contentcontainer_id = $user_id + 1; // The content container permissions stores the incorrect user id.
+            $model->group_id = $groupid;
+            $model->module_id = 'mail';
+            $model->class = 'humhub\modules\mail\permissions\RecieveMail';
+            $model->state = 1;
+            $model->save();
+        }
 
     }
 }

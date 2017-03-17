@@ -97,13 +97,14 @@ class AwaitingCertificationController extends Controller
 
                 $changeUserGroup = $helper->changeGroups($model->user_id);
                 if (!($changeUserGroup == 'Moved from Uncertified Group')) {
-                    yii::warning('Something went wrong in the certified module change user groups in AwaitingCertificationController');
+                    Yii::warning(Yii::t('CertifiedModule.controllers_AwaitingCertificationController', 'Something went wrong in the certified module change user groups in AwaitingCertificationController'));
                 }
             }
 
             $profile->certified = 1;
             $profile->save();
             $model->save();
+
 
         }
 
@@ -127,8 +128,8 @@ class AwaitingCertificationController extends Controller
         $pictureGuid = $this->saveImage($model, $name);
         if ($pictureGuid !== false){
             return $pictureGuid;
-        } throw new HttpException('Could not save ' . $name . ' image.
-        Please resubmit or notify admin.');
+        } throw new HttpException(Yii::t('CertifiedModule.controllers_AwaitingCertificationController', 'Could not save ' . $name . ' image.
+        Please resubmit or notify admin.'));
     }
 
     /**

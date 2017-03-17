@@ -6,4 +6,7 @@ return [
     'User ID' => '',
     'Her Picture' => '',
     'His Picture' => '',
+    'Certified By' => '',
+    'Certified' => '',
+
 ];
