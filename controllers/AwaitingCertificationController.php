@@ -96,7 +96,7 @@ class AwaitingCertificationController extends Controller
             if($needsApproval == false && $tempCertifyAfterSubmit == true) {
 
                 $changeUserGroup = $helper->changeGroups($model->user_id);
-                if (!($changeUserGroup == Yii::t('CertifiedModule.controllers_AwaitingCertificationController', 'Moved from Uncertified Group')) {
+                if (!($changeUserGroup == 'Moved from Uncertified Group') {
                     Yii::warning(Yii::t('CertifiedModule.controllers_AwaitingCertificationController', 'Something went wrong in the certified module change user groups in AwaitingCertificationController'));
                 }
             }
